@@ -1,0 +1,92 @@
+server:
+  #端口号配置
+  port: 8081
+
+spring:
+  #允许循环依赖
+  main:
+    allow-circular-references: true
+  #数据源
+  datasource:
+    druid:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/yeb
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #最小空闲连接数
+      min-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      login-timeout: 180000
+      #最大连接数
+      max-active: 10
+      #从连接池返回的连接为自动提交
+      default-auto-commit: true
+      #连接超时时间
+      max-wait: 30000
+      #测试连接是否可连接查询语句
+      validation-query: SELECT 1
+  #设置redis连接
+  redis:
+    #连接地址
+    host: 192.168.75.130
+    #连接端口
+    port: 6379
+    #超时时间
+    timeout: 10000ms
+    #数据库索引
+    database: 0
+    #连接属性
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 100
+        #最小连接数
+        max-idle: 5
+        #最大阻塞时间
+        max-wait: 5000ms
+  #配置RabbitMQ
+  rabbitmq:
+    #端口号
+    host: 192.168.75.130
+    #用户名
+    username: admin
+    #密码
+    password: 123
+    #端口
+    port: 5672
+    template:
+      mandatory: true
+    #开启失败消息回调
+    publisher-returns: true
+    #开启成功回调
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        #将消息应答改成手动应答
+        acknowledge-mode: manual
+
+
+
+# Mybatis-plus配置
+mybatis-plus:
+  #配置Mapper映射文件
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  # 配置MyBatis数据返回类型别名（默认别名是类名）
+  type-aliases-package: com.yeb.centre.pojo
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: false
+
+## Mybatis SQL 打印(方法接口所在的包，不是Mapper.xml所在的包)
+logging:
+  level:
+    com.yeb.centre.mapper: debug
+jwt:
+  # JWT存储的请求头
+  tokenHeader: Authorization
+  # JWT 加解密使用的密钥
+  secret: yeb-secret
+  # JWT的超期限时间（60*60*24）
+  expiration: 604800
+  # JWT 负载中拿到开头
+  tokenHead: Bearer
